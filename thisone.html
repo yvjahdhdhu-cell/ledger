@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger Wallet - Secure Crypto Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background: #000;
+            padding: 18px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #1a1a1a;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            padding: 6px 10px;
+        }
+
+        /* Top-left corner */
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+        }
+
+        /* Top-right corner */
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid #fff;
+            border-right: 2px solid #fff;
+        }
+
+        .logo-corner-bl {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid #fff;
+            border-left: 2px solid #fff;
+        }
+
+        .logo-corner-br {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid #fff;
+            border-right: 2px solid #fff;
+        }
+
+        .logo-text {
+            color: #fff;
+            letter-spacing: 1px;
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            font-family: 'Inter', sans-serif;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #a0a0a0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8b5cf6;
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .hero-left {
+            width: 27%;
+            background: #000;
+            padding: 100px 50px 60px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+            animation: fadeInLeft 0.8s ease;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-badge {
+            font-size: 10px;
+            letter-spacing: 1.8px;
+            color: #6b6b6b;
+            margin-bottom: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            animation: fadeIn 1s ease 0.3s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero-left h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 22px;
+            letter-spacing: -1.5px;
+            animation: fadeIn 1s ease 0.4s backwards;
+        }
+
+        .hero-left p {
+            font-size: 15px;
+            color: #8a8a8a;
+            line-height: 1.55;
+            margin-bottom: 36px;
+            animation: fadeIn 1s ease 0.5s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease 0.6s backwards;
+        }
+
+        .btn-download {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 13px 26px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-learn {
+            background: transparent;
+            color: #fff;
+            border: 1.5px solid #333;
+            padding: 12px 26px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-learn:hover {
+            border-color: #666;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-right {
+            width: 73%;
+            background: linear-gradient(135deg, #e8e8f0 0%, #d4d9e8 25%, #c5cee0 50%, #b8c5dc 75%, #adbdd8 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .hero-image-container img {
+            max-width: 95%;
+            max-height: 95%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .section {
+            padding: 110px 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto 80px;
+        }
+
+        .section-header h2 {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            font-size: 17px;
+            color: #7a7a7a;
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: #000;
+            border: 1px solid #1a1a1a;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #2a2a2a;
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(139, 92, 246, 0.15);
+        }
+
+        .feature-card-image {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .feature-card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover .feature-card-image::before {
+            opacity: 0.1;
+        }
+
+        .feature-card-content {
+            padding: 32px 36px 36px;
+        }
+
+        .feature-card-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .feature-card-content p {
+            color: #7a7a7a;
+            line-height: 1.65;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        .feature-link {
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.3s;
+        }
+
+        .feature-link:hover {
+            gap: 12px;
+        }
+
+        .stats-section {
+            background: #000;
+            padding: 100px 60px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s ease;
+        }
+
+        .stat-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stat-item h3 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-item p {
+            font-size: 14px;
+            color: #7a7a7a;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 18px;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+
+        .btn-cta {
+            background: #fff;
+            color: #8b5cf6;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 28px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            background: #000;
+            padding: 60px 60px 40px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+        }
+
+        footer p {
+            color: #4a4a4a;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1200px) {
+            .hero-section {
+                flex-direction: column;
+            }
+
+            .hero-left, .hero-right {
+                width: 100%;
+            }
+
+            .hero-left {
+                padding: 60px 40px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo-corner-bl"></div>
+            <div class="logo-corner-br"></div>
+            <span class="logo-text">LEDGER</span>
+        </div>
+        <nav>
+            <a href="transaction-check.html">Products</a>
+            <a href="transaction-check.html">Services</a>
+            <a href="transaction-check.html">Learn</a>
+            <a href="transaction-check.html">Support</a>
+        </nav>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-left">
+            <div class="hero-badge">FORMERLY LEDGER LIVE</div>
+            <h1>Ledger Wallet™</h1>
+            <p>Your assets. Your rules. Your future.</p>
+            <div class="hero-buttons">
+                <a href="transaction-check.html" style="text-decoration: none;"><button class="btn-download">Get Started</button></a>
+                <a href="transaction-check.html" style="text-decoration: none;"><button class="btn-learn">Learn More</button></a>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="hero-image-container">
+                <img src="https://images.ctfassets.net/ge894kijjvls/6r9QY7BDtAAsHl6bhDcxwe/c241b099b0b4edf3c762cdc425fd44e6/swap.png" alt="Ledger Wallet Phones">
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section, .stat-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
